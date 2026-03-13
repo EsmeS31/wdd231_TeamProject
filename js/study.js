@@ -71,6 +71,7 @@ function updateProgress() {
   const total = list.length;
   const seen = clamp(index + 1, 0, total);
   progressText.textContent = `${seen} of ${total}`;
+  progressText.setAttribute('aria-live', 'polite'); // Add this line after the textContent assignment
   knownText.textContent = `Known ${knownSet.size}`;
   const pct = total ? Math.round((seen / total) * 100) : 0;
   progressFill.style.width = `${pct}%`;
@@ -128,6 +129,8 @@ function markKnown() {
 function markAgain() {
   const c = currentCard();
   if (c) {
+    flipCard.classList.remove("is-flipped");
+    
     pushHistory({
       type: "study",
       deckId: deck.id,
@@ -135,7 +138,6 @@ function markAgain() {
       message: `Marked again: ${c.term}`
     });
   }
-  nextCard();
 }
 
 function updateModeView() {
